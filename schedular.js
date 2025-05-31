@@ -66,3 +66,48 @@ function enhancedRotateTasks() {
   state.done = { kitchen: false, bathroom: false };
   saveState(state);
 }
+
+// Enhanced reminders for biweekly bathroom
+function enhancedSendReminders(day) {
+  let state = loadState();
+
+  if (!state.done) state.done = { kitchen: false, bathroom: false };
+
+  if (!(day === 'today' && state.done.kitchen)) {
+    const kitchenPerson = people[state.kitchenIndex];
+    let kitchenMsg = day === 'tomorrow'
+      ? `Yoo ${kitchenPerson.name}!, you need to clean the kitchen tomorrow meh!`
+      : `Yoo ${kitchenPerson.name}!, clean the kitchen today meh!`;
+    sendCustomMessage(kitchenPerson, kitchenMsg);
+  }
+
+  if (state.bathroomWeek === 0 && !(day === 'today' && state.done.bathroom)) {
+    const bathroomPerson = people[state.bathroomIndex];
+    let bathroomMsg = day === 'tomorrow'
+      ? `Yoo ${bathroomPerson.name}!, you need to clean the bathroom tomorrow meh!`
+      : `Yoo ${bathroomPerson.name}!, clean the bathroom today meh!`;
+    sendCustomMessage(bathroomPerson, bathroomMsg);
+  }
+}
+
+// Schedule tasks
+function scheduleReminders() {
+  cron.schedule('0 10 * * 5', () => { // (Friday 10:00 AM)
+    enhancedSendReminders('tomorrow');
+  });
+
+  cron.schedule('0 10 * * 6', () => { // (Saturday 10:00 AM)
+    enhancedSendReminders('today');
+  });
+
+  cron.schedule('0 10 * * 0', () => { // (Sunday 10:00 AM)
+    enhancedSendReminders('today');
+    enhancedRotateTasks(); // Rotate after Sunday cleaning
+  });
+
+  cron.schedule('0 21 4 * *', () => { // (4th of every month at 9:00 PM)
+    sendRentReminder();
+  });
+
+  console.log("Scheduling started: Kitchen (weekly), Bathroom (biweekly), with Friday reminders and monthly rent reminder");
+}
