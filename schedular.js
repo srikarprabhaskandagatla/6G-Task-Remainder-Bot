@@ -35,3 +35,34 @@ function sendCustomMessage(person, message) {
     .then(msg => console.log(`Sent reminder to ${person.name}: ${msg.sid}`))
     .catch(err => console.error(err));
 }
+
+// Send rent reminder to all members
+function sendRentReminder() {
+  people.forEach(person => {
+    const message = `Yoo ${person.name}, pay the rent and utilities this month meh!`;
+    sendCustomMessage(person, message);
+  });
+}
+
+// Helper: Get next eligible bathroom index (not same as kitchen)
+function getNextBathroomIndex(kitchenIndex, prevBathroomIndex) {
+  for (let i = 1; i <= people.length; i++) {
+    let idx = (prevBathroomIndex + i) % people.length;
+    if (idx !== kitchenIndex) return idx;
+  }
+  return (kitchenIndex + 1) % people.length;
+}
+
+// Enhanced rotateTask for biweekly bathroom and kitchen-bathroom collision avoidance
+function enhancedRotateTasks() {
+  let state = loadState();
+  state.kitchenIndex = (state.kitchenIndex + 1) % people.length;
+  if (state.bathroomWeek === undefined) state.bathroomWeek = 0; 
+  if (state.bathroomWeek === 0) {
+    state.bathroomIndex = getNextBathroomIndex(state.kitchenIndex, state.bathroomIndex ?? 0);
+  }
+
+  state.bathroomWeek = (state.bathroomWeek + 1) % 2;
+  state.done = { kitchen: false, bathroom: false };
+  saveState(state);
+}
