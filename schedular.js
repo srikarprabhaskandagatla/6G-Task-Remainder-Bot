@@ -162,3 +162,5 @@ function startBotServer() {
   app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 }
 
+// Main execution
+startBotServer();
