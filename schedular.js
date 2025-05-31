@@ -6,9 +6,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+// Twilio Client Instance
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-// Roommates for names and phone numbers
+// Roommates names and phone numbers (Change these in .env file)
 const people = [
   {name: NAME_1, phone: PHONE_NUMBER_1},
   {name: NAME_2, phone: PHONE_NUMBER_2},
@@ -25,7 +26,7 @@ function saveState(state) {
   fs.writeFileSync('state.json', JSON.stringify(state, null, 2));
 }
 
-function sendCustomMessage(person, message) {
+function sendMessage(person, message) {
   client.messages
     .create({
       body: message,
@@ -39,8 +40,8 @@ function sendCustomMessage(person, message) {
 // Send rent reminder to all members
 function sendRentReminder() {
   people.forEach(person => {
-    const message = `Yoo ${person.name}, pay the rent and utilities this month meh!`;
-    sendCustomMessage(person, message);
+    const message = `Yoo ${person.name}, pay the rent and utilities this month!`;
+    sendMessage(person, message);
   });
 }
 
@@ -76,21 +77,21 @@ function enhancedSendReminders(day) {
   if (!(day === 'today' && state.done.kitchen)) {
     const kitchenPerson = people[state.kitchenIndex];
     let kitchenMsg = day === 'tomorrow'
-      ? `Yoo ${kitchenPerson.name}!, you need to clean the kitchen tomorrow meh!`
-      : `Yoo ${kitchenPerson.name}!, clean the kitchen today meh!`;
-    sendCustomMessage(kitchenPerson, kitchenMsg);
+      ? `Yoo ${kitchenPerson.name}!, you need to clean the kitchen tomorrow!`
+      : `Yoo ${kitchenPerson.name}!, clean the kitchen today!`;
+    sendMessage(kitchenPerson, kitchenMsg);
   }
 
   if (state.bathroomWeek === 0 && !(day === 'today' && state.done.bathroom)) {
     const bathroomPerson = people[state.bathroomIndex];
     let bathroomMsg = day === 'tomorrow'
-      ? `Yoo ${bathroomPerson.name}!, you need to clean the bathroom tomorrow meh!`
-      : `Yoo ${bathroomPerson.name}!, clean the bathroom today meh!`;
-    sendCustomMessage(bathroomPerson, bathroomMsg);
+      ? `Yoo ${bathroomPerson.name}!, you need to clean the bathroom tomorrow!`
+      : `Yoo ${bathroomPerson.name}!, clean the bathroom today!`;
+    sendMessage(bathroomPerson, bathroomMsg);
   }
 }
 
-// Schedule tasks
+// Task schedule logic using cron
 function scheduleReminders() {
   cron.schedule('0 10 * * 5', () => { // (Friday 10:00 AM)
     enhancedSendReminders('tomorrow');
@@ -102,7 +103,7 @@ function scheduleReminders() {
 
   cron.schedule('0 10 * * 0', () => { // (Sunday 10:00 AM)
     enhancedSendReminders('today');
-    enhancedRotateTasks(); // Rotate after Sunday cleaning
+    enhancedRotateTasks();            // Rotate after Sunday cleaning
   });
 
   cron.schedule('0 21 4 * *', () => { // (4th of every month at 9:00 PM)
@@ -112,6 +113,7 @@ function scheduleReminders() {
   console.log("Scheduling started: Kitchen (weekly), Bathroom (biweekly), with Friday reminders and monthly rent reminder");
 }
 
+// Express server setup for WhatsApp webhook
 function startBotServer() {
   const app = express();
   app.use(bodyParser.urlencoded({ extended: false }));
