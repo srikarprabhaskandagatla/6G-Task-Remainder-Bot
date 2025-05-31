@@ -111,3 +111,54 @@ function scheduleReminders() {
 
   console.log("Scheduling started: Kitchen (weekly), Bathroom (biweekly), with Friday reminders and monthly rent reminder");
 }
+
+function startBotServer() {
+  const app = express();
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(express.json());
+
+  app.post('/whatsapp-webhook', (req, res) => {
+    const incomingMsg = req.body.Body && req.body.Body.trim().toLowerCase();
+    const from = req.body.From;
+
+    let state = loadState();
+
+    const kitchenPerson = state.kitchenIndex !== undefined ? state.kitchenIndex : 0;
+    const bathroomPerson = state.bathroomIndex !== undefined ? state.bathroomIndex : 1;
+
+    if (!state.done) state.done = { kitchen: false, bathroom: false };
+
+    let thankYouTask = null;
+
+    if (incomingMsg === 'done') {
+      if (from.endsWith(people[kitchenPerson].phone.replace('whatsapp:', ''))) {
+        state.done.kitchen = true;
+        thankYouTask = 'kitchen';
+      }
+      if (state.bathroomWeek === 0 && from.endsWith(people[bathroomPerson].phone.replace('whatsapp:', ''))) {
+        state.done.bathroom = true;
+        thankYouTask = 'bathroom';
+      }
+      saveState(state);
+    }
+
+    if (thankYouTask) {
+      client.messages.create({
+        body: `Thank you for cleaning ${thankYouTask}.`,
+        from: process.env.TWILIO_WHATSAPP_NUMBER,
+        to: from
+      }).catch(err => console.error(err));
+    }
+
+    res.sendStatus(200);
+  });
+
+  // Optional: Health check endpoint
+  app.get('/', (req, res) => res.send('WhatsApp Cleaning Bot Running.'));
+
+  scheduleReminders();
+
+  const PORT = process.env.PORT || 7777;
+  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+}
+
