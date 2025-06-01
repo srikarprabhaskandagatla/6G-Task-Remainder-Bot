@@ -27,9 +27,10 @@ function saveState(state) {
 }
 
 function sendMessage(person, message) {
+  const fullMessage = `${message}\n\nInput 'Done' to mark it as completed and you will not receive any reminders till your next schedule.`;
   client.messages
     .create({
-      body: message,
+      body: fullMessage,
       from: process.env.TWILIO_WHATSAPP_NUMBER,
       to: person.phone
     })
@@ -93,7 +94,7 @@ function enhancedSendReminders(day) {
 
 // Task schedule logic using cron
 function scheduleReminders() {
-  cron.schedule('0 10 * * 5', () => { // (Friday 10:00 AM)
+  cron.schedule('*/2 * * * *', () => { // (Friday 10:00 AM)
     enhancedSendReminders('tomorrow');
   });
 
