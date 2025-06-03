@@ -63,16 +63,28 @@ git clone https://github.com/srikarprabhaskandagatla/6G-Task-Remainder-Bot.git
 
 # Installation
 - Now, to run the Express Server, we have to install some dependencies which can be done by executing the commands below.
-  - Command 1 
+
+<h3 align="center">
+  <br>
+    Command 1
+  <br>
+</h3>
+
 ```bash
 # It creates a 'package.json' file, which is essential for managing your project's dependencies and configuration.
 npm init -y
 ```
 
-  - Command 2
+<h3 align="center">
+  <br>
+    Command 2
+  <br>
+</h3>
+
 ```bash
 npm install express twilio node-cron dotenv
 ```
+  
   - `express` – A fast, minimal web framework for Node.js.
     - Used to create APIs or servers easily.
 
@@ -87,18 +99,31 @@ npm install express twilio node-cron dotenv
 
   - These will create the files - `package-lock.json`, `package.json`, and a folder `node_modules`.
 
-  - Command 3
+<h3 align="center">
+  <br>
+    Command 3
+  <br>
+</h3>
+
 ```bash
 # To run the server
 node schedular.js
 ```
+  
   - This command runs the Express Server.
 
 - Since this code is capable of taking input replies from roommates on WhatsApp, we need to expose the Express Server using ngrok. This allows the webhook connection from WhatsApp to reach our Express Server.
-  - Command 4
+
+<h3 align="center">
+  <br>
+    Command 4
+  <br>
+</h3>
+
 ```bash
 ngrok http 7777
 ```
+  
   - This gives us an HTTP link which needs to be configured on the Twilio website. Go to the Console and then follow this path to set up the webhook link - `Messaging > Try it out > Send a WhatsApp message > Sandbox settings` and Here, paste the ngrok link under `When a message comes in` and change the method to  `POST`.
 
 - That's it - your Task Remainder is now working!
