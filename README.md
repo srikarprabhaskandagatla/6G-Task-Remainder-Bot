@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    Task Scheduler and Reminder WhatsApp Bot: Easy Task Scheduler and Reminder
+    Task Scheduler and Reminder WhatsApp Bot: Easy-to-use Task Scheduler and Reminder Agent
   <br>
 </h1>
 
