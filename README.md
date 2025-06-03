@@ -3,7 +3,7 @@
     Task Remainder WhatsApp Bot: Easy Task Schedular and Remainder
   <br>
 </h1>
-git
+
 <p align="center"> 
   <a href="https://www.oracle.com/developer/javascript/">
     <img src="https://img.shields.io/badge/-JavaScript-grey?style=flat-square&logo=javascript&logoColor=F7DF1E" alt="JavaScript">
@@ -23,9 +23,21 @@ git
 <p align="center">
   <a href="#why-task-remainder-whatsapp-bot">Why Task Remainder WhatsApp Bot?</a>
   •
+  <a href="#how-does-it-work">How does it work?</a>
+  •
   <a href="#instructions-to-setup">Instructions to Setup</a>
   •
   <a href="#installation">Installation</a>
   •
   <a href="#contribution">Contribution</a>
 </p>
+
+# Why Task Reminder WhatsApp Bot?
+Cleaning a house is also a big part of daily life. If you are living with your friends, cleaning your kitchen and bathroom is also a part of all roommates' responsibility. For this reason, I have created a Task Reminder WhatsApp Bot — which sends reminders to all the roommates about when they need to clean the kitchen or bathroom. This played an integral role for me while I was pursuing my Master's in Computer Science at UMass Amherst, where we, the roommates in apartment 6G, used this to schedule our kitchen and bathroom cleaning among us.
+
+# How does it work?
+This bot reminds the specific roommate when they need to clean the kitchen or bathroom. Kitchen cleaning is reminded every week to different roommates, and bathroom cleaning is reminded to the roommate who doesn't have a kitchen schedule. Bathroom reminders are sent bi-weekly (i.e., every 2 weeks), and kitchen reminders are sent every weekend.
+
+Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Down' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly.
+
+Now into technicality, this application uses Node.js at runtime and an Express server is deployed to run the application. As obvious, JavaScript is used for this application.
