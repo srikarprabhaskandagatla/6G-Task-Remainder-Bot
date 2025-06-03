@@ -28,6 +28,8 @@
   •
   <a href="#installation">Installation</a>
   •
+  <a href="#run-the-code-on-cloud">Run the Code on Cloud</a>
+  •
   <a href="#contribution">Contribution</a>
 </p>
 
@@ -37,18 +39,76 @@ Cleaning a house is also a big part of daily life. If you are living with your f
 # How does it work?
 This bot reminds the specific roommate when they need to clean the kitchen or bathroom. Kitchen cleaning is reminded every week to different roommates, and bathroom cleaning is reminded to the roommate who doesn't have a kitchen schedule. Bathroom reminders are sent bi-weekly (i.e., every 2 weeks), and kitchen reminders are sent every weekend.
 
-Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Done' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly.
+Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Done' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly. The state is saved as indexies in the `state.json` file.
 
 Now into technicality, this application uses Node.js at runtime and an Express server is deployed to run the application. As obvious, JavaScript is used for this application.
 
 # Instructions to Setup
+- Clone this repository using the command below
+```bash
+git clone https://github.com/srikarprabhaskandagatla/6G-Task-Remainder-Bot.git
+```
 - Setup the environmental variables
   - Create a `.env` file in the working directory. Copy the contents of [.env.example](.env.example).
   - Follow the comments to fill in all the environment variables. The Account SID and Authentication Token are taken from the Twilio API setup, which is discussed below.
-- Setup account in Twilio. 
-To access the SID and Authentication Token, follow the video below.
+- Setup account in [Twilio](https://www.twilio.com/en-us). To access the SID and Authentication Token, follow the video below. (Click the image/thumbnail below)
+
 <p align="center"> 
   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
     <img src="/images/image1.png" alt="Watch the video" width="700"/>
   </a>
 </p>
+
+- The required setup is done.
+
+# Installation
+- Now, to run the Express Server, we have to install some dependencies which can be done by executing the commands below.
+  - Command 1 
+```bash
+# It creates a 'package.json' file, which is essential for managing your project's dependencies and configuration.
+npm init -y
+```
+
+  - Command 2
+```bash
+npm install express twilio node-cron dotenv
+```
+  - `express` – A fast, minimal web framework for Node.js.
+    - Used to create APIs or servers easily.
+
+  - `twilio` – The official Twilio SDK for Node.js.
+    - Lets you send WhatsApp messages, SMS, make calls, etc., using the Twilio API.
+
+  - `node-cron` – A task scheduler library.
+    - Used to run code on a schedule (e.g., every Friday at 10 AM).
+
+  - `dotenv` – Loads environment variables from a .env file into process.env.
+    - Helps keep secrets (like API keys) out of your code.
+
+  - These will create the files - `package-lock.json`, `package.json`, and a folder `node_modules`.
+
+  - Command 3
+```bash
+# To run the server
+node schedular.js
+```
+  - This command runs the Express Server.
+
+- Since this code is capable of taking input replies from roommates on WhatsApp, we need to expose the Express Server using ngrok. This allows the webhook connection from WhatsApp to reach our Express Server.
+  - Command 4
+```bash
+ngrok http 7777
+```
+  - This gives us an HTTP link which needs to be configured on the Twilio website. Go to the Console and then follow this path to set up the webhook link - `Messaging > Try it out > Send a WhatsApp message > Sandbox settings` and Here, paste the ngrok link under `When a message comes in` and change the method to  `POST`.
+
+- That's it - your Task Remainder is now working!
+
+# Run the Code on Cloud
+- We have discussed how to set this up on a local system. To run it on the cloud without using your local system, you can host this code on Render, Heroku, or an instance of AWS. Follow the same steps till Command 3.
+
+- Instead of running Command 4 (which exposes the Express Server using ngrok), you can simply use the HTTP link provided by your hosting service and paste it into the Twilio website.
+
+# Contribution
+If you have any feedback, suggestions, or find a bug, feel free to open an issue or submit a pull request — your contributions are always welcome!
+
+This project is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file.
