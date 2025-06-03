@@ -94,7 +94,7 @@ function enhancedSendReminders(day) {
 
 // Task schedule logic using cron
 function scheduleReminders() {
-  cron.schedule('*/2 * * * *', () => { // (Friday 10:00 AM)
+  cron.schedule('0 10 * * 5', () => { // (Friday 10:00 AM)
     enhancedSendReminders('tomorrow');
   });
 
