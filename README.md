@@ -34,28 +34,28 @@
 </p>
 
 # Why Task Reminder WhatsApp Bot?
-Cleaning a house is also a big part of daily life. If you are living with your friends, cleaning your kitchen and bathroom is also a part of all roommates' responsibility. For this reason, I have created a Task Reminder WhatsApp Bot — which sends reminders to all the roommates about when they need to clean the kitchen or bathroom. This played an integral role for me while I was pursuing my Master's in Computer Science at UMass Amherst, where we, the roommates in apartment 6G, used this to schedule our kitchen and bathroom cleaning among us.
+Cleaning a house is also a big part of daily life. If you are living with your friends, cleaning your kitchen and bathroom is also a part of all roommates' responsibility. For this reason, I have created a Task Reminder WhatsApp Bot — which sends reminders to all the roommates about when they need to clean the kitchen or bathroom. This played an integral role for us while I was pursuing my Master of Science in Computer Science at UMass Amherst, where we, the roommates in apartment 6G, used this to schedule our kitchen and bathroom cleaning among us.
 
 # How does it work?
 This bot reminds the specific roommate when they need to clean the kitchen or bathroom. Kitchen cleaning is reminded every week to different roommates, and bathroom cleaning is reminded to the roommate who doesn't have a kitchen schedule. Bathroom reminders are sent bi-weekly (i.e., every 2 weeks), and kitchen reminders are sent every weekend.
 
 Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Done' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly. The state is saved as indexies in the `state.json` file.
 
-Now into technicality, this application uses Node.js at runtime and an Express server is deployed to run the application. As obvious, JavaScript is used for this application.
+Now coming to the technical part, this application runs on Node.js, and an Express server is deployed to handle the backend.
 
 # Instructions to Setup
-- Clone this repository using the command below
+- Clone this repository using the command below:
 ```bash
 git clone https://github.com/srikarprabhaskandagatla/6G-Task-Remainder-Bot.git
 ```
-- Setup the environmental variables
+- Setup the environmental variables:
   - Create a `.env` file in the working directory. Copy the contents of [.env.example](.env.example).
   - Follow the comments to fill in all the environment variables. The Account SID and Authentication Token are taken from the Twilio API setup, which is discussed below.
 - Setup account in [Twilio](https://www.twilio.com/en-us). To access the SID and Authentication Token, follow the video below. (Click the image/thumbnail below)
 
 <p align="center"> 
   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-    <img src="/images/image1.png" alt="Watch the video" width="700"/>
+    <img src="/images/thumbnail.png" alt="Watch the video" width="700"/>
   </a>
 </p>
 
@@ -71,9 +71,9 @@ git clone https://github.com/srikarprabhaskandagatla/6G-Task-Remainder-Bot.git
 </h3>
 
 ```bash
-# It creates a 'package.json' file, which is essential for managing your project's dependencies and configuration.
 npm init -y
 ```
+- Creates a `package.json` to manage project dependencies and settings.
 
 <h3 align="center">
   <br>
@@ -106,7 +106,6 @@ npm install express twilio node-cron dotenv
 </h3>
 
 ```bash
-# To run the server
 node schedular.js
 ```
   
@@ -124,14 +123,14 @@ node schedular.js
 ngrok http 7777
 ```
   
-  - This gives us an HTTP link which needs to be configured on the Twilio website. Go to the Console and then follow this path to set up the webhook link - `Messaging > Try it out > Send a WhatsApp message > Sandbox settings` and Here, paste the ngrok link under `When a message comes in` and change the method to  `POST`.
+  - This gives us an HTTP link which needs to be configured on the Twilio website. Go to the Console and then follow this path to set up the webhook link - `Messaging > Try it out > Send a WhatsApp message > Sandbox settings` and here, paste the ngrok link under `When a message comes in` and change the method to `POST`.
 
 - That's it - your Task Remainder is now working!
 
 # Run the Code on Cloud
-- We have discussed how to set this up on a local system. To run it on the cloud without using your local system, you can host this code on Render, Heroku, or an instance of AWS. Follow the same steps till Command 3.
+We have discussed how to set this up on a local system. To run it on the cloud without using your local system, you can host this code on Render, Heroku, or an instance of AWS. Follow the same steps till Command 3.
 
-- Instead of running Command 4 (which exposes the Express Server using ngrok), you can simply use the HTTP link provided by your hosting service and paste it into the Twilio website.
+Instead of running Command 4 (which exposes the Express Server using ngrok), you can simply use the HTTP link provided by your hosting service and paste it into the Twilio website.
 
 # Contribution
 If you have any feedback, suggestions, or find a bug, feel free to open an issue or submit a pull request — your contributions are always welcome!

@@ -11,9 +11,10 @@ const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TO
 
 // Roommates names and phone numbers (Change these in .env file)
 const people = [
-  {name: NAME_1, phone: PHONE_NUMBER_1},
-  {name: NAME_2, phone: PHONE_NUMBER_2},
-  {name: NAME_3, phone: PHONE_NUMBER_3}
+  {name: process.env.NAME_1, phone: process.env.PHONE_NUMBER_1},
+  {name: process.env.NAME_2, phone: process.env.PHONE_NUMBER_2},
+  {name: process.env.NAME_3, phone: process.env.PHONE_NUMBER_3}
+  // Add more people as needed, following the same format
 ];
 
 // To schedule tasks, the state is loaded from state.json
@@ -26,27 +27,27 @@ function saveState(state) {
   fs.writeFileSync('state.json', JSON.stringify(state, null, 2));
 }
 
-function sendMessage(person, message) {
-  const fullMessage = `${message}\n\nInput 'Done' to mark it as completed and you will not receive any reminders till your next schedule.`;
+function sendMessage(person, message, taskType) {
+  const fullMessage = `${message}\n\nReply 'Done' to mark it as completed and you will not receive any reminders till your next schedule.`;
   client.messages
     .create({
       body: fullMessage,
       from: process.env.TWILIO_WHATSAPP_NUMBER,
       to: person.phone
     })
-    .then(msg => console.log(`Sent reminder to ${person.name}: ${msg.sid}`))
+    .then(msg => console.log(`Sent ${taskType} reminder to ${person.name}: ${msg.sid}`))
     .catch(err => console.error(err));
 }
 
 // Send rent reminder to all members
 function sendRentReminder() {
   people.forEach(person => {
-    const message = `Yoo ${person.name}, pay the rent and utilities this month!`;
-    sendMessage(person, message);
+    const message = `Yo ${person.name}! Pay the rent and utilities this month!`;
+    sendMessage(person, message, 'rent');
   });
 }
 
-// Helper: Get next eligible bathroom index (not same as kitchen)
+// Get next eligible bathroom index (not same as kitchen)
 function getNextBathroomIndex(kitchenIndex, prevBathroomIndex) {
   for (let i = 1; i <= people.length; i++) {
     let idx = (prevBathroomIndex + i) % people.length;
@@ -75,20 +76,30 @@ function enhancedSendReminders(day) {
 
   if (!state.done) state.done = { kitchen: false, bathroom: false };
 
+  // Warning if the same person is assigned both kitchen and bathroom
+  if (state.kitchenIndex === state.bathroomIndex && state.bathroomWeek === 0) {
+    console.warn(
+      `Warning: The same person (${people[state.kitchenIndex].name}) is assigned both kitchen and bathroom this week.`
+    );
+    console.warn(
+    `To avoid this, please reset the state.json to kitchenIndex: 0, bathroomIndex: 1, bathroomWeek: 0.`
+    );
+  }
+
   if (!(day === 'today' && state.done.kitchen)) {
     const kitchenPerson = people[state.kitchenIndex];
     let kitchenMsg = day === 'tomorrow'
-      ? `Yoo ${kitchenPerson.name}!, you need to clean the kitchen tomorrow!`
-      : `Yoo ${kitchenPerson.name}!, clean the kitchen today!`;
-    sendMessage(kitchenPerson, kitchenMsg);
+      ? `Yo ${kitchenPerson.name}! You need to clean the kitchen tomorrow!`
+      : `Yo ${kitchenPerson.name}! Clean the kitchen today!`;
+    sendMessage(kitchenPerson, kitchenMsg, 'kitchen');
   }
 
   if (state.bathroomWeek === 0 && !(day === 'today' && state.done.bathroom)) {
     const bathroomPerson = people[state.bathroomIndex];
     let bathroomMsg = day === 'tomorrow'
-      ? `Yoo ${bathroomPerson.name}!, you need to clean the bathroom tomorrow!`
-      : `Yoo ${bathroomPerson.name}!, clean the bathroom today!`;
-    sendMessage(bathroomPerson, bathroomMsg);
+      ? `Yo ${bathroomPerson.name}! You need to clean the bathroom tomorrow!`
+      : `Yo ${bathroomPerson.name}! Clean the bathroom today!`;
+    sendMessage(bathroomPerson, bathroomMsg, 'bathroom');
   }
 }
 
@@ -111,7 +122,7 @@ function scheduleReminders() {
     sendRentReminder();
   });
 
-  console.log("Scheduling started: Kitchen (weekly), Bathroom (biweekly), with Friday reminders and monthly rent reminder");
+  console.log("Scheduling started: Kitchen (weekly), Bathroom (biweekly), with task and monthly rent reminders");
 }
 
 // Express server setup for WhatsApp webhook
