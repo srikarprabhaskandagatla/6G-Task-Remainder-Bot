@@ -47,4 +47,4 @@ Now into technicality, this application uses Node.js at runtime and an Express s
   - Follow the comments to fill in all the environment variables. The Account SID and Authentication Token are taken from the Twilio API setup, which is discussed below.
 - Setup account in Twilio. 
 To access the SID and Authentication Token, follow the video below.
-[![Watch the video](../images/image1.png)](https://www.youtube.com/watch?v=UVez2UyjpFk&ab_channel=TwilioDevs)
+[![Watch the video](/images/image1.png)](https://www.youtube.com/watch?v=UVez2UyjpFk&ab_channel=TwilioDevs)
