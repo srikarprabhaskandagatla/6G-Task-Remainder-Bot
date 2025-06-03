@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    Task Remainder WhatsApp Bot: Easy Task Schedular and Remainder
+    Task Scheduler and Reminder WhatsApp Bot: Easy Task Schedular and Reminder
   <br>
 </h1>
 
@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="#why-task-remainder-whatsapp-bot">Why Task Remainder WhatsApp Bot?</a>
+  <a href="#why-task-reminder-whatsapp-bot">Why Task Scheduler and Reminder WhatsApp Bot?</a>
   •
   <a href="#how-does-it-work">How does it work?</a>
   •
@@ -33,7 +33,7 @@
   <a href="#contribution">Contribution</a>
 </p>
 
-# Why Task Reminder WhatsApp Bot?
+# Why Task Schedular and Reminder WhatsApp Bot?
 Cleaning a house is also a big part of daily life. If you are living with your friends, cleaning your kitchen and bathroom is also a part of all roommates' responsibility. For this reason, I have created a Task Reminder WhatsApp Bot — which sends reminders to all the roommates about when they need to clean the kitchen or bathroom. This played an integral role for us while I was pursuing my Master of Science in Computer Science at UMass Amherst, where we, the roommates in apartment 6G, used this to schedule our kitchen and bathroom cleaning among us.
 
 # How does it work?
@@ -46,7 +46,7 @@ Now coming to the technical part, this application runs on Node.js, and an Expre
 # Instructions to Setup
 - Clone this repository using the command below:
 ```bash
-git clone https://github.com/srikarprabhaskandagatla/6G-Task-Remainder-Bot.git
+git clone https://github.com/srikarprabhaskandagatla/6G-Task-Scheduler-Reminder-Bot.git
 ```
 - Setup the environmental variables:
   - Create a `.env` file in the working directory. Copy the contents of [.env.example](.env.example).
@@ -125,7 +125,7 @@ ngrok http 7777
   
   - This gives us an HTTP link which needs to be configured on the Twilio website. Go to the Console and then follow this path to set up the webhook link - `Messaging > Try it out > Send a WhatsApp message > Sandbox settings` and here, paste the ngrok link under `When a message comes in` and change the method to `POST`.
 
-- That's it - your Task Remainder is now working!
+- That's it - your Task Scheduler and Reminder is now working!
 
 # Run the Code on Cloud
 We have discussed how to set this up on a local system. To run it on the cloud without using your local system, you can host this code on Render, Heroku, or an instance of AWS. Follow the same steps till Command 3.
