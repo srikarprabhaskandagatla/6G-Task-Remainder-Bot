@@ -19,7 +19,6 @@
   </a>
 </p>
 
-
 <p align="center">
   <a href="#why-task-remainder-whatsapp-bot">Why Task Remainder WhatsApp Bot?</a>
   •
@@ -38,6 +37,14 @@ Cleaning a house is also a big part of daily life. If you are living with your f
 # How does it work?
 This bot reminds the specific roommate when they need to clean the kitchen or bathroom. Kitchen cleaning is reminded every week to different roommates, and bathroom cleaning is reminded to the roommate who doesn't have a kitchen schedule. Bathroom reminders are sent bi-weekly (i.e., every 2 weeks), and kitchen reminders are sent every weekend.
 
-Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Down' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly.
+Kitchen reminders are sent on Friday, Saturday, and Sunday. If the reminded roommate replies 'Done' after completing the task on their first reminder date (Friday), they stop getting reminders for that week. Otherwise, they continue to receive reminders until Sunday. The same goes for bathroom cleaning reminders, but those are sent every 2 weeks instead of weekly.
 
 Now into technicality, this application uses Node.js at runtime and an Express server is deployed to run the application. As obvious, JavaScript is used for this application.
+
+# Instructions to Setup
+- Setup the environmental variables
+  - Create a `.env` file in the working directory. Copy the contents of [.env.example](.env.example).
+  - Follow the comments to fill in all the environment variables. The Account SID and Authentication Token are taken from the Twilio API setup, which is discussed below.
+- Setup account in Twilio. 
+To access the SID and Authentication Token, follow the video below.
+[Watch Demo Video](https://www.youtube.com/watch?v=UVez2UyjpFk&ab_channel=TwilioDevs)
