@@ -48,6 +48,26 @@ function sendMessage(person, message, taskType) {
     .catch(err => console.error(err));
 }
 
+function sendMessage(person, message, taskType) {
+  // Check if today is Sunday (0)
+  const today = new Date().getDay();
+  let fullMessage = message;
+  if (today !== 0) {
+    fullMessage += `\n\nReply 'Done' to mark it as completed and you will not receive any reminders till your next schedule.`;
+  }
+  else {
+    fullMessage += `\n\nDo not reply 'Done' today, as it is Sunday, which is the last reminder for this week.`;
+  }
+  client.messages
+    .create({
+      body: fullMessage,
+      from: process.env.TWILIO_WHATSAPP_NUMBER,
+      to: person.phone
+    })
+    .then(msg => console.log(`Sent ${taskType} reminder to ${person.name}: ${msg.sid}`))
+    .catch(err => console.error(err));
+}
+
 // Send rent reminder to all members
 function sendRentReminder() {
   people.forEach(person => {
@@ -144,6 +164,9 @@ function startBotServer() {
     const incomingMsg = req.body.Body && req.body.Body.trim().toLowerCase();
     const from = req.body.From;
 
+    // Get today's day (0 = Sunday, 6 = Saturday)
+    const today = new Date().getDay();
+
     let state = loadState();
 
     const kitchenPerson = state.kitchenIndex !== undefined ? state.kitchenIndex : 0;
@@ -153,7 +176,8 @@ function startBotServer() {
 
     let thankYouTask = null;
 
-    if (incomingMsg === 'done') {
+    // Only process "done" replies if today is NOT Sunday (0)
+    if (incomingMsg === 'done' && today !== 0) {
       if (from.endsWith(people[kitchenPerson].phone.replace('whatsapp:', ''))) {
         state.done.kitchen = true;
         thankYouTask = 'kitchen';
