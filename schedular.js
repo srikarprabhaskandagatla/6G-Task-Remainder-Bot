@@ -9,13 +9,22 @@ require('dotenv').config();
 // Twilio Client Instance
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-// Roommates names and phone numbers (Change these in .env file)
-const people = [
-  {name: process.env.NAME_1, phone: process.env.PHONE_NUMBER_1},
-  {name: process.env.NAME_2, phone: process.env.PHONE_NUMBER_2},
-  {name: process.env.NAME_3, phone: process.env.PHONE_NUMBER_3}
-  // Add more people as needed, following the same format
-];
+// Roommates names and phone numbers (Add roommates names and phone numbers in .env file)
+function loadPeople() {
+  // Dynamically load roommate's details from environment variables
+  const people = [];
+  let i = 1;
+  while (process.env[`NAME_${i}`] && process.env[`PHONE_NUMBER_${i}`]) {
+    people.push({
+      name: process.env[`NAME_${i}`],
+      phone: process.env[`PHONE_NUMBER_${i}`]
+    });
+    i++;
+  }
+  return people;
+}
+
+const people = loadPeople();
 
 // To schedule tasks, the state is loaded from state.json
 function loadState() {
