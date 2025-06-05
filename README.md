@@ -54,7 +54,7 @@ git clone https://github.com/srikarprabhaskandagatla/6G-Task-Scheduler-Reminder-
 - Setup account in [Twilio](https://www.twilio.com/en-us). To access the SID and Authentication Token, follow the video below. (Click the image/thumbnail below)
 
 <p align="center"> 
-  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+  <a href="https://www.youtube.com/watch?v=UVez2UyjpFk&ab_channel=TwilioDevs">
     <img src="/images/thumbnail.png" alt="Watch the video" width="700"/>
   </a>
 </p>
