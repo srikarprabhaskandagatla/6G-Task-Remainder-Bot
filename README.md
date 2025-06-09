@@ -46,7 +46,7 @@ Now coming to the technical part, this application runs on Node.js, and an Expre
 # Instructions to Setup
 - Clone this repository using the command below:
 ```bash
-git clone https://github.com/srikarprabhaskandagatla/6G-Task-Scheduler-Reminder-Bot.git
+git clone https://github.com/srikarprabhaskandagatla/task-scheduler-reminder-bot.git
 ```
 - Setup the environmental variables:
   - Create a `.env` file in the working directory. Copy the contents of [.env.example](.env.example).
